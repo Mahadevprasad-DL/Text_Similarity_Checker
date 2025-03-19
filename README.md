@@ -10,7 +10,7 @@ A **simple plagiarism detection tool** built using **Java Swing** to compare and
 ## 📥 Installation  
 1. Clone the repository:  
    ```sh
-   git clone https://github.com/your-username/Java-Plagiarism-Checker.git
+   git clone https://github.com/Mahadevprasad-DL/Text_Similarity_Checker
 
 ## Output 
 
