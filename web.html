@@ -1,0 +1,75 @@
+CREATE DATABASE SolarPanelDB;
+USE SolarPanelDB;
+
+CREATE TABLE SolarPanels (
+    panel_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    capacity INT,
+    pv_type VARCHAR(50),
+    install_date DATE,
+    install_charges DECIMAL(10,2),
+    area VARCHAR(100),
+    installation_type VARCHAR(50)
+);
+
+CREATE TABLE Distributors (
+    distributor_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50),
+    panel_id INT,
+    FOREIGN KEY (panel_id) REFERENCES SolarPanels(panel_id)
+);
+
+
+-- Inserting data into SolarPanels
+INSERT INTO SolarPanels (name, capacity, pv_type, install_date, install_charges, area, installation_type)
+VALUES 
+('SunPower X22', 400, 'Monocrystalline', '2023-01-10', 5000.00, 'New York', 'Commercial'),
+('LG NeON 2', 350, 'Monocrystalline', '2023-02-15', 4500.00, 'Los Angeles', 'Residential'),
+('Canadian Solar CS6K', 330, 'Polycrystalline', '2023-03-20', 4000.00, 'Chicago', 'Commercial'),
+('Trina Solar TSM', 370, 'Monocrystalline', '2023-04-05', 4800.00, 'Houston', 'Residential'),
+('Jinko Solar Cheetah', 345, 'Polycrystalline', '2023-05-12', 4200.00, 'Phoenix', 'Commercial');
+
+-- Inserting data into Distributors
+INSERT INTO Distributors (name, panel_id)
+VALUES 
+('Green Energy Supplies', 1),
+('SolarTech Distributors', 2),
+('EcoPower Solutions', 3),
+('Bright Future Solar', 4),
+('Sustainable Energy Co.', 5);
+
+
+#1
+SELECT name, capacity 
+FROM SolarPanels 
+ORDER BY capacity DESC 
+LIMIT 1;
+
+
+#2
+SELECT area, pv_type 
+FROM SolarPanels 
+WHERE pv_type = 'Monocrystalline';
+
+
+#3
+SELECT area, SUM(install_charges) AS total_installation_charges 
+FROM SolarPanels 
+GROUP BY area;
+
+
+#4
+SELECT d.name AS distributor_name, sp.name AS panel_name, sp.pv_type, sp.capacity, sp.install_date
+FROM SolarPanels sp
+JOIN Distributors d ON sp.panel_id = d.panel_id
+WHERE sp.install_date = (SELECT MIN(install_date) FROM SolarPanels);
+
+
+#5
+SELECT installation_type, AVG(install_charges) AS average_installation_charge
+FROM SolarPanels
+WHERE installation_type = 'Commercial'
+GROUP BY installation_type;
+
+
+
